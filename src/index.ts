@@ -1,6 +1,6 @@
 const DIRNAME_POSIX_REGEX = /^((?:\.(?![^\/]))|(?:(?:\/?|)(?:[\s\S]*?)))(?:\/+?|)(?:(?:\.{1,2}|[^\/]+?|)(?:\.[^.\/]*|))(?:[\/]*)$/;
 const DIRNAME_WIN32_REGEX = /^((?:\.(?![^\\]))|(?:(?:\\?|)(?:[\s\S]*?)))(?:\\+?|)(?:(?:\.{1,2}|[^\\]+?|)(?:\.[^.\\]*|))(?:[\\]*)$/;
-const EXTRACT_PATH_REGEX = /@?(?<path>[file:\/\/]?[^\(\s]+):[0-9]+:[0-9]+/;
+const EXTRACT_PATH_REGEX = /@?(?<path>[file:\/\/]+?[^\(]+):[0-9]+:[0-9]+/;
 const WIN_POSIX_DRIVE_REGEX = /^\/[A-Z]:\/*/;
 
 const pathDirname = (path: string) => {
@@ -35,7 +35,7 @@ const getPathFromErrorStack = () => {
   }
 
   if (initiator) {
-    path = EXTRACT_PATH_REGEX.exec(initiator)?.groups?.path || '';
+    path = decodeURI(EXTRACT_PATH_REGEX.exec(initiator)?.groups?.path || '');
   }
 
   if(!initiator || !path) {
